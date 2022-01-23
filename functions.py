@@ -47,7 +47,7 @@ def get_info_by_title(title):
     # print(query)
     cursor.execute(query)
     executed = cursor.fetchall()[0]
-    print(executed)
+    # print(executed)
     return {
         "title": executed[0],
         "country": executed[1],
@@ -56,4 +56,28 @@ def get_info_by_title(title):
         "description": executed[4]
     }
 
+def get_films_in_interval(start, finish):
+    connection = sqlite3.connect("netflix.db")
+    cursor = connection.cursor()
+
+    query = f"""
+            SELECT title, release_year FROM netflix
+            WHERE release_year BETWEEN '{start}' AND '{finish}' 
+            ORDER BY release_year DESC
+            LIMIT 100
+        """
+    # print(query)
+    cursor.execute(query)
+    executed = cursor.fetchall()
+    result = []
+    for film in executed:
+    #     print(film)
+        result.append(
+            {"title": film[0],
+             "release_year": film[1]}
+        )
+    # print(result)
+    return result
+
 # get_info_by_title('7:19')
+# get_films_in_interval(2000, 2010)
